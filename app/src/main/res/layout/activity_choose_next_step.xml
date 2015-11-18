@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context="com.a_piskun.steamgamescollectionapp.ChooseNextStepActivity"
+    android:minWidth="200dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Choose your next step"
+        android:id="@+id/choose_message"
+        android:textSize="50dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:minHeight="250dp"
+        android:gravity="center_vertical|center_horizontal" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Show games collection"
+        android:id="@+id/games_collection_button"
+        android:layout_below="@+id/choose_message"
+        android:layout_centerHorizontal="true"
+        android:textSize="30dp"
+        android:minWidth="550dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Show recent games"
+        android:id="@+id/recent_games_button"
+        android:layout_below="@+id/games_collection_button"
+        android:layout_centerHorizontal="true"
+        android:textSize="30dp"
+        android:minWidth="550dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Compare collections of games"
+        android:id="@+id/compare_button"
+        android:layout_below="@+id/recent_games_button"
+        android:layout_centerHorizontal="true"
+        android:textSize="30dp"
+        android:minWidth="550dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Show friends"
+        android:id="@+id/friend_list_button"
+        android:layout_below="@+id/compare_button"
+        android:layout_centerHorizontal="true"
+        android:textSize="30dp"
+        android:minWidth="550dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="BACK"
+        android:id="@+id/back_choose_button"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:textSize="25dp"
+        android:minHeight="75dp" />
+
+</RelativeLayout>
