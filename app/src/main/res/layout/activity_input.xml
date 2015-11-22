@@ -27,12 +27,14 @@
         android:layout_marginTop="96dp"
         android:layout_below="@+id/id_input_field"
         android:layout_centerHorizontal="true"
-        android:minWidth="256dp" />
+        android:minWidth="256dp"
+        android:visibility="invisible"
+        android:clickable="false" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Get info"
+        android:text="Check in"
         android:id="@+id/get_info_button"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
@@ -43,7 +45,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="TEMP"
+        android:text="Your profile name will appear here after checking in, if ID is valid"
         android:id="@+id/json_message"
         android:textSize="25dp"
         android:textColor="#000000"
