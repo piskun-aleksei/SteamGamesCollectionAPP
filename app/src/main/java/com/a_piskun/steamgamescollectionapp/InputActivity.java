@@ -1,6 +1,7 @@
 package com.a_piskun.steamgamescollectionapp;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -8,12 +9,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLConnection;
-import java.util.ArrayList;
 
 public class InputActivity extends AppCompatActivity {
     public final static String EXTRA_MESSAGE = "com.a_piskun.steamgamescollectionapp.MESSAGE";
@@ -22,7 +25,7 @@ public class InputActivity extends AppCompatActivity {
     TextView json_message;
     File steam_api;
     String profile_url;
-    StringBuilder profile_url_builder;
+
     String BASE_URL = "http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=6FA27B723BB28AFB78D820A2C4C6DBD6&steamids=";
 
     @Override
@@ -37,10 +40,6 @@ public class InputActivity extends AppCompatActivity {
 
         json_message = (TextView) findViewById(R.id.json_message);
 
-        profile_url_builder = new StringBuilder("");
-
-        profile_url_builder.append(BASE_URL);
-
         confirm_id_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -54,45 +53,70 @@ public class InputActivity extends AppCompatActivity {
         get_info_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                StringBuilder profile_url_builder = new StringBuilder("");
+                profile_url_builder.append(BASE_URL);
                 profile_url_builder.append(id_input_field.getText().toString());
                 profile_url = profile_url_builder.toString();
-                ArrayList<String> strings = new ArrayList<String>();
-                get_json_file("test");
-              //  json_message.setText(strings.get(0));
-                //id_input_field.setText(profile_url);
+
+                get_json_file(profile_url);
             }
         });
     }
 
     private void get_json_file(String json_url){
-        //ArrayList<String> listItems = new ArrayList<String>();
-        try {
-            URL steam_api = new URL(
-                    "http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=6FA27B723BB28AFB78D820A2C4C6DBD6&steamids=76561197986648105.json");
-            URLConnection tc = steam_api.openConnection();
-            String test = tc.getInputStream().toString();
-
-           /* String line;
-            while ((line = in.readLine()) != null) {
-                JSONArray ja = new JSONArray(line);
-
-                //for (int i = 0; i < ja.length(); i++) {
-                    JSONObject jo = (JSONObject) ja.get(0);
-                    listItems.add(jo.getString("response"));
-                //}
-            }*/
-        } catch (MalformedURLException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } /*catch (JSONException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }*/
-
-        //return listItems;
+        new JSONTask().execute(json_url);
     }
+    public class JSONTask extends AsyncTask<String , String, String > {
 
+        @Override
+        protected String doInBackground(String... params) {
+            HttpURLConnection url_connection = null;
+            BufferedReader reader = null;
+            try {
+                URL steam_api = new URL(params[0]);
+                url_connection = (HttpURLConnection) steam_api.openConnection();
+                url_connection.connect();
+
+                InputStream stream = url_connection.getInputStream();
+
+                reader = new BufferedReader(new InputStreamReader(stream));
+
+                StringBuffer buffer = new StringBuffer();
+
+                String line = "";
+                while((line = reader.readLine()) != null){
+                    buffer.append(line);
+                }
+                return buffer.toString();
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                if(url_connection != null){
+                    url_connection.disconnect();
+                }
+                try{
+                    if(reader != null){
+                        reader.close();
+                    }
+
+                } catch(IOException e){
+                    e.printStackTrace();
+                }
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String result){
+            super.onPostExecute(result);
+            json_message.setText(result);
+        }
+    }
 }
+
+
+
+
