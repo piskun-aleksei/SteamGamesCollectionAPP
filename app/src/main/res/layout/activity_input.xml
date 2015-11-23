@@ -10,14 +10,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/id_input_field"
+        android:textSize="35dp"
+        android:textColor="#000000"
         android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:textSize="50dp"
-        android:text="Input ID"
-        android:textColor="#000000" />
+        android:layout_alignLeft="@+id/confirm_id_button"
+        android:layout_alignStart="@+id/confirm_id_button"
+        android:layout_marginTop="86dp"
+        android:layout_alignRight="@+id/json_message"
+        android:layout_alignEnd="@+id/json_message"
+        android:inputType="numberDecimal" />
 
     <Button
         android:layout_width="wrap_content"
@@ -49,11 +50,27 @@
         android:id="@+id/json_message"
         android:textSize="25dp"
         android:textColor="#000000"
-        android:layout_below="@+id/confirm_id_button"
-        android:layout_above="@+id/get_info_button"
+        android:gravity="center_vertical|center_horizontal"
+        android:layout_below="@+id/id_input_field"
+        android:maxWidth="563dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_alignRight="@+id/id_input_field"
-        android:layout_alignEnd="@+id/id_input_field"
-        android:gravity="center_vertical|center_horizontal" />
+        android:minWidth="563dp"
+        android:layout_above="@+id/get_info_button" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Input ID"
+        android:id="@+id/input_id_message"
+        android:layout_alignTop="@+id/id_input_field"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignBottom="@+id/id_input_field"
+        android:layout_toStartOf="@+id/confirm_id_button"
+        android:textSize="35dp"
+        android:textColor="#000000"
+        android:gravity="center_vertical|center_horizontal"
+        android:layout_toLeftOf="@+id/confirm_id_button" />
 </RelativeLayout>

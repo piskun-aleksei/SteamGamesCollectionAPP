@@ -14,7 +14,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -28,7 +27,6 @@ public class InputActivity extends AppCompatActivity {
     Button confirm_id_button, get_info_button;
     EditText id_input_field;
     TextView json_message;
-    File steam_api;
     String profile_url, profile_name;
 
     String BASE_URL = "http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?" +
@@ -54,6 +52,7 @@ public class InputActivity extends AppCompatActivity {
                 String message = id_input_field.getText().toString();
                 choose_intent.putExtra(EXTRA_MESSAGE, message);
                 choose_intent.putExtra(NAME_MESSAGE, profile_name);
+                confirm_id_button.setVisibility(View.INVISIBLE);
                 startActivity(choose_intent);
             }
         });
@@ -65,10 +64,8 @@ public class InputActivity extends AppCompatActivity {
                 profile_url_builder.append(BASE_URL);
                 profile_url_builder.append(id_input_field.getText().toString());
                 profile_url = profile_url_builder.toString();
-
                 get_json_file(profile_url);
                 confirm_id_button.setVisibility(View.VISIBLE);
-
             }
         });
     }
