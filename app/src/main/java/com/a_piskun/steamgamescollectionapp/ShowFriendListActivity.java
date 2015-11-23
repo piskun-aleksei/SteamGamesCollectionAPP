@@ -2,10 +2,13 @@ package com.a_piskun.steamgamescollectionapp;
 
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.Button;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import org.json.JSONArray;
@@ -19,18 +22,26 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class ShowFriendListActivity extends AppCompatActivity {
-    Button back_button;
-    TextView friend_first_message, friend_second_message, friend_third_message,
-            friend_fourth_message, friend_fifth_message, name_message;
+    Button back_button, refresh_list_button;
+    TextView name_message, percentage_message;
     String profile_id, profile_url, profile_name;
     String BASE_URL = "http://api.steampowered.com/ISteamUser/GetFriendList/v0001/?key=" +
             "6FA27B723BB28AFB78D820A2C4C6DBD6&steamid=";
     String URL_ENDING = "&relationship=friend";
     String BASE_SECONDARY_URL = "http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?" +
             "key=6FA27B723BB28AFB78D820A2C4C6DBD6&steamids=";
-    int current_friend;
+    ArrayList<String> list_of_friends =
+            new ArrayList<String>(Arrays.asList("Wait for list to load"));
+    String [] final_list;
+    ListView friends_list;
+    ArrayAdapter<String> adapter;
+    ProgressBar loading_bar;
+    Integer current_friend, friend_list_length, percent;
+    Boolean start_flag = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,12 +55,17 @@ public class ShowFriendListActivity extends AppCompatActivity {
 
         back_button = (Button) findViewById(R.id.back_friends_button);
 
-        friend_first_message = (TextView) findViewById(R.id.friend_first_message);
-        friend_second_message = (TextView) findViewById(R.id.friend_second_message);
-        friend_third_message = (TextView) findViewById(R.id.friend_third_message);
-        friend_fourth_message = (TextView) findViewById(R.id.friend_fourth_message);
-        friend_fifth_message = (TextView) findViewById(R.id.friend_fifth_message);
         name_message = (TextView) findViewById(R.id.friends_name_message);
+        percentage_message = (TextView) findViewById(R.id.percentage_message);
+
+        friends_list = (ListView) findViewById(R.id.friends_list);
+
+        loading_bar = (ProgressBar) findViewById(R.id.loading_bar);
+
+        adapter = new ArrayAdapter<String>
+                (this, android.R.layout.simple_list_item_1, list_of_friends);
+
+        friends_list.setAdapter(adapter);
 
         name_message.setText(profile_name);
 
@@ -59,11 +75,9 @@ public class ShowFriendListActivity extends AppCompatActivity {
         profile_url_builder.append(URL_ENDING);
         profile_url = profile_url_builder.toString();
 
-        //for(int i = 0; i < 5; i ++){
-        current_friend = 4;
         get_json_file(profile_url);
 
-        //}
+        loading_bar.setVisibility(View.VISIBLE);
 
         back_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,7 +117,15 @@ public class ShowFriendListActivity extends AppCompatActivity {
                 JSONObject json_object = new JSONObject(json_info);
                 JSONObject json_friendslist = json_object.getJSONObject("friendslist");
                 JSONArray json_friends = json_friendslist.getJSONArray("friends");
-                JSONObject json_final_object = json_friends.getJSONObject(current_friend);
+
+                if(start_flag) {
+                    friend_list_length = json_friends.length();
+                    current_friend = friend_list_length;
+                    final_list = new String[friend_list_length];
+                    start_flag = false;
+                }
+
+                JSONObject json_final_object = json_friends.getJSONObject(current_friend-1);
 
                 String friend_id = json_final_object.getString("steamid");
 
@@ -135,7 +157,6 @@ public class ShowFriendListActivity extends AppCompatActivity {
             }
             return null;
         }
-
         @Override
         protected void onPostExecute(String result){
             super.onPostExecute(result);
@@ -169,6 +190,7 @@ public class ShowFriendListActivity extends AppCompatActivity {
                 JSONObject json_object = new JSONObject(json_info);
                 JSONObject json_response = json_object.getJSONObject("response");
                 JSONArray json_players = json_response.getJSONArray("players");
+
                 JSONObject json_final_object = json_players.getJSONObject(0);
 
                 String profile_name = json_final_object.getString("personaname");
@@ -201,24 +223,18 @@ public class ShowFriendListActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String result){
             super.onPostExecute(result);
-            if(current_friend == 0){
-                friend_first_message.setText(result);
-            }
-            if(current_friend == 1){
-                friend_second_message.setText(result);
-            }
-            if(current_friend == 2){
-                friend_third_message.setText(result);
-            }
-            if(current_friend == 3){
-                friend_fourth_message.setText(result);
-            }
-            if(current_friend == 4){
-                friend_fifth_message.setText(result);
-            }
             if(current_friend != 0){
                 current_friend--;
+                percent = (((friend_list_length - current_friend)* 100)/(friend_list_length));
+                percentage_message.setText(percent.toString() + "%");
+                final_list[current_friend] = result;
                 get_json_file(profile_url);
+            }
+            else{
+                loading_bar.setVisibility(View.INVISIBLE);
+                percentage_message.setVisibility(View.INVISIBLE);
+                adapter.clear();
+                adapter.addAll(final_list);
             }
         }
     }

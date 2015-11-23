@@ -19,67 +19,6 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Friend #1"
-        android:id="@+id/friend_first_message"
-        android:layout_below="@+id/friend_list_message"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="74dp"
-        android:textSize="50dp"
-        android:textColor="#000000" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Friend #2"
-        android:id="@+id/friend_second_message"
-        android:layout_below="@+id/friend_first_message"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:textSize="50dp"
-        android:textColor="#000000" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Friend #3"
-        android:id="@+id/friend_third_message"
-        android:layout_below="@+id/friend_second_message"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:textSize="50dp"
-        android:textColor="#000000" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Friend #4"
-        android:id="@+id/friend_fourth_message"
-        android:layout_below="@+id/friend_third_message"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:textSize="50dp"
-        android:textColor="#000000" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Friend #5"
-        android:id="@+id/friend_fifth_message"
-        android:layout_below="@+id/friend_fourth_message"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:textSize="50dp"
-        android:textColor="#000000" />
-
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -121,5 +60,50 @@
         android:textColor="#000000"
         android:textSize="50dp"
         android:minWidth="350dp" />
+
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/friends_list"
+        android:layout_below="@+id/friend_list_message"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_above="@+id/back_friends_button"
+        android:foregroundGravity="center_vertical|center_horizontal" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="REFRESH LIST"
+        android:id="@+id/refresh_list_button"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:textSize="25dp"
+        android:layout_alignTop="@+id/back_friends_button"
+        android:visibility="invisible" />
+
+    <ProgressBar
+        style="?android:attr/progressBarStyleSmall"
+        android:layout_width= "25dp"
+        android:layout_height = "25dp"
+        android:id="@+id/loading_bar"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:indeterminate="false"
+        android:indeterminateDrawable="@drawable/blue_progress"
+        android:visibility="invisible" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text=" "
+        android:id="@+id/percentage_message"
+        android:layout_below="@+id/friends_list"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@+id/loading_bar"
+        android:gravity="center_vertical|center_horizontal"
+        android:minWidth="100dp" />
 
 </RelativeLayout>
