@@ -41,7 +41,7 @@ public class ShowFriendListActivity extends AppCompatActivity {
     ArrayAdapter<String> adapter;
     ProgressBar loading_bar;
     Integer current_friend, friend_list_length, percent;
-    Boolean start_flag = true;
+    Boolean start_flag = true, clear_flag = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +63,7 @@ public class ShowFriendListActivity extends AppCompatActivity {
         loading_bar = (ProgressBar) findViewById(R.id.loading_bar);
 
         adapter = new ArrayAdapter<String>
-                (this, android.R.layout.simple_list_item_1, list_of_friends);
+                (this, R.layout.text_view_layout,android.R.id.text1, list_of_friends);
 
         friends_list.setAdapter(adapter);
 
@@ -122,6 +122,7 @@ public class ShowFriendListActivity extends AppCompatActivity {
                     friend_list_length = json_friends.length();
                     current_friend = friend_list_length;
                     final_list = new String[friend_list_length];
+                    //adapter.clear();
                     start_flag = false;
                 }
 
@@ -223,18 +224,23 @@ public class ShowFriendListActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String result){
             super.onPostExecute(result);
+            if(clear_flag){
+                adapter.clear();
+                clear_flag = false;
+            }
             if(current_friend != 0){
                 current_friend--;
                 percent = (((friend_list_length - current_friend)* 100)/(friend_list_length));
                 percentage_message.setText(percent.toString() + "%");
                 final_list[current_friend] = result;
+                adapter.add(result);
                 get_json_file(profile_url);
             }
             else{
                 loading_bar.setVisibility(View.INVISIBLE);
                 percentage_message.setVisibility(View.INVISIBLE);
-                adapter.clear();
-                adapter.addAll(final_list);
+                //adapter.clear();
+                //adapter.addAll(final_list);
             }
         }
     }

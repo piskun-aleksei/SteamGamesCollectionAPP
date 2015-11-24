@@ -68,10 +68,9 @@
         android:layout_below="@+id/friend_list_message"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_above="@+id/back_friends_button"
-        android:foregroundGravity="center_vertical|center_horizontal" />
+        android:layout_above="@+id/back_friends_button"/>
 
-    <Button
+     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="REFRESH LIST"
