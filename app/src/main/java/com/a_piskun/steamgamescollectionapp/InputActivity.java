@@ -44,7 +44,6 @@ public class InputActivity extends AppCompatActivity {
 
         json_message = (TextView) findViewById(R.id.json_message);
 
-
         confirm_id_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -63,11 +62,14 @@ public class InputActivity extends AppCompatActivity {
                 if(confirm_id_button.getVisibility() == View.VISIBLE) {
                     confirm_id_button.setVisibility(View.INVISIBLE);
                 }
-                StringBuilder profile_url_builder = new StringBuilder("");
-                profile_url_builder.append(BASE_URL);
-                profile_url_builder.append(id_input_field.getText().toString());
-                profile_url = profile_url_builder.toString();
-                get_json_file(profile_url);
+
+                    StringBuilder profile_url_builder = new StringBuilder("");
+                    profile_url_builder.append(BASE_URL);
+                    profile_url_builder.append(id_input_field.getText().toString());
+                    profile_url = profile_url_builder.toString();
+                    get_json_file(profile_url);
+
+
             }
         });
     }
@@ -80,67 +82,69 @@ public class InputActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
-            HttpURLConnection url_connection = null;
-            BufferedReader reader = null;
-            try {
-                URL steam_api = new URL(params[0]);
-                url_connection = (HttpURLConnection) steam_api.openConnection();
-                url_connection.connect();
+                HttpURLConnection url_connection = null;
+                BufferedReader reader = null;
+                try {
+                    URL steam_api = new URL(params[0]);
+                    url_connection = (HttpURLConnection) steam_api.openConnection();
 
-                InputStream stream = url_connection.getInputStream();
+                    url_connection.connect();
 
-                reader = new BufferedReader(new InputStreamReader(stream));
+                    InputStream stream = url_connection.getInputStream();
 
-                StringBuffer buffer = new StringBuffer();
+                    reader = new BufferedReader(new InputStreamReader(stream));
 
-                String line = "";
-                while((line = reader.readLine()) != null){
-                    buffer.append(line);
-                }
+                    StringBuffer buffer = new StringBuffer();
 
-                String json_info = buffer.toString();
-
-                JSONObject json_object = new JSONObject(json_info);
-                JSONObject json_response = json_object.getJSONObject("response");
-                JSONArray json_players = json_response.getJSONArray("players");
-                JSONObject json_final_object = json_players.getJSONObject(0);
-
-                String profile_name = json_final_object.getString("personaname");
-
-                return profile_name;
-
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (JSONException e) {
-                e.printStackTrace();
-            } finally {
-                if(url_connection != null){
-                    url_connection.disconnect();
-                }
-                try{
-                    if(reader != null){
-                        reader.close();
+                    String line = "";
+                    while ((line = reader.readLine()) != null) {
+                        buffer.append(line);
                     }
 
-                } catch(IOException e){
+                    String json_info = buffer.toString();
+
+                    JSONObject json_object = new JSONObject(json_info);
+                    JSONObject json_response = json_object.getJSONObject("response");
+                    JSONArray json_players = json_response.getJSONArray("players");
+                    JSONObject json_final_object = json_players.getJSONObject(0);
+
+                    String profile_name = json_final_object.getString("personaname");
+
+                    return profile_name;
+
+                } catch (MalformedURLException e) {
                     e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                } finally {
+                    if (url_connection != null) {
+                        url_connection.disconnect();
+                    }
+                    try {
+                        if (reader != null) {
+                            reader.close();
+                        }
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
-            }
-            return null;
+                return null;
         }
 
         @Override
         protected void onPostExecute(String result){
             super.onPostExecute(result);
             profile_name = result;
+
             if(result != null) {
                 json_message.setText(profile_name);
                 confirm_id_button.setVisibility(View.VISIBLE);
             }
             else{
-                json_message.setText("Invalid URL");
+                json_message.setText("Invalid URL or Bad internet connection");
             }
         }
     }
