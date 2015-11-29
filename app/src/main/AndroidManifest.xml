@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.a_piskun.steamgamescollectionapp" >
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -19,7 +19,9 @@
         </activity>
         <activity android:name=".ChooseNextStepActivity" >
         </activity>
-        <activity android:name=".ShowFriendListActivity" >
+        <activity android:name=".ShowChosenListActivity" >
+        </activity>
+        <activity android:name=".GamesCollectionActivity" >
         </activity>
     </application>
 

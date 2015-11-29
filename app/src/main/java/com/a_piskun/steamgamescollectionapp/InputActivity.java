@@ -60,12 +60,14 @@ public class InputActivity extends AppCompatActivity {
         get_info_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(confirm_id_button.getVisibility() == View.VISIBLE) {
+                    confirm_id_button.setVisibility(View.INVISIBLE);
+                }
                 StringBuilder profile_url_builder = new StringBuilder("");
                 profile_url_builder.append(BASE_URL);
                 profile_url_builder.append(id_input_field.getText().toString());
                 profile_url = profile_url_builder.toString();
                 get_json_file(profile_url);
-                confirm_id_button.setVisibility(View.VISIBLE);
             }
         });
     }
@@ -133,7 +135,13 @@ public class InputActivity extends AppCompatActivity {
         protected void onPostExecute(String result){
             super.onPostExecute(result);
             profile_name = result;
-            json_message.setText(profile_name);
+            if(result != null) {
+                json_message.setText(profile_name);
+                confirm_id_button.setVisibility(View.VISIBLE);
+            }
+            else{
+                json_message.setText("Invalid URL");
+            }
         }
     }
 }
