@@ -45,22 +45,12 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Compare collections of games"
-        android:id="@+id/compare_button"
-        android:layout_below="@+id/recent_games_button"
-        android:layout_centerHorizontal="true"
-        android:textSize="30dp"
-        android:minWidth="550dp" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:text="Show friends"
         android:id="@+id/friend_list_button"
-        android:layout_below="@+id/compare_button"
         android:layout_centerHorizontal="true"
         android:textSize="30dp"
-        android:minWidth="550dp" />
+        android:minWidth="550dp"
+        android:layout_below="@+id/recent_games_button" />
 
     <TextView
         android:layout_width="wrap_content"

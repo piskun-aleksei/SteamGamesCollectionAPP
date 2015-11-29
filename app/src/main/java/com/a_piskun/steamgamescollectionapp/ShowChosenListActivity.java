@@ -8,7 +8,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,7 +26,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class ShowChosenListActivity extends AppCompatActivity {
-    TextView name_message, percentage_message, chosen_list_message, total_count_message,
+    TextView name_message, chosen_list_message, total_count_message,
             total_message;
     Integer list_mode;
     String profile_id, profile_url, profile_name, friend_id;
@@ -40,9 +39,9 @@ public class ShowChosenListActivity extends AppCompatActivity {
     int [] games_hours;
     ListView chosen_list;
     ArrayAdapter<String> adapter;
-    ProgressBar loading_bar;
-    Integer current_list_line, list_length, percent;
-    Boolean start_flag = true, clear_flag = true, no_recent_games;
+
+    Integer current_list_line, list_length;
+    Boolean no_recent_games;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,8 +50,6 @@ public class ShowChosenListActivity extends AppCompatActivity {
 
         initialize_fields();
         initialize_strings();
-
-       // Toast.makeText(this, parent_intent.getStringExtra(ChooseNextStepActivity.EXTRA_MESSAGE), Toast.LENGTH_SHORT).show();
 
         fill_view();
         build_url(1);
@@ -68,21 +65,19 @@ public class ShowChosenListActivity extends AppCompatActivity {
         profile_name = parent_intent.getStringExtra(ChooseNextStepActivity.NAME_MESSAGE);
 
         name_message = (TextView) findViewById(R.id.name_message);
-        percentage_message = (TextView) findViewById(R.id.percentage_message);
+
         chosen_list_message = (TextView) findViewById(R.id.choosen_list_message);
         total_count_message = (TextView) findViewById(R.id.total_count_message);
         total_message = (TextView) findViewById(R.id.total_message);
 
         chosen_list = (ListView) findViewById(R.id.choosen_list);
 
-        loading_bar = (ProgressBar) findViewById(R.id.loading_bar);
-
         list_of_friends = new ArrayList<String>(Arrays.asList("Wait for list to load"));
 
         adapter = new ArrayAdapter<String>
                 (this, R.layout.text_view_layout,android.R.id.text1, list_of_friends);
 
-        list_mode = parent_intent.getIntExtra("View", 0);
+        list_mode = parent_intent.getIntExtra(ChooseNextStepActivity.VIEW_MESSAGE, 0);
 
         if(list_mode != 2) {
             chosen_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -127,7 +122,6 @@ public class ShowChosenListActivity extends AppCompatActivity {
                 chosen_list_message.setText("Recent games list:");
                 break;
         }
-
     }
 
     private void build_url(int mode){

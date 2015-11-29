@@ -15,8 +15,7 @@ public class ChooseNextStepActivity extends AppCompatActivity {
     int FRIENDS_CONST = 2;
     int RECENT_CONST = 3;
 
-    Button games_collection_button, recent_games_button,
-            compare_button, friend_list_button;
+    Button games_collection_button, recent_games_button, friend_list_button;
     String profile_id, profile_name;
     TextView name_message;
     Intent parent_intent;
@@ -41,7 +40,6 @@ public class ChooseNextStepActivity extends AppCompatActivity {
 
         games_collection_button = (Button) findViewById(R.id.games_collection_button);
         recent_games_button = (Button) findViewById(R.id.recent_games_button);
-        compare_button = (Button) findViewById(R.id.compare_button);
         friend_list_button = (Button) findViewById(R.id.friend_list_button);
     }
 
@@ -52,7 +50,7 @@ public class ChooseNextStepActivity extends AppCompatActivity {
                 Intent show_intent = new Intent(v.getContext(), ShowChosenListActivity.class);
                 show_intent.putExtra(EXTRA_MESSAGE, profile_id);
                 show_intent.putExtra(NAME_MESSAGE, profile_name);
-                show_intent.putExtra("View", 1);
+                show_intent.putExtra(VIEW_MESSAGE, GAMES_CONST);
                 startActivity(show_intent);
             }
         });
@@ -63,7 +61,7 @@ public class ChooseNextStepActivity extends AppCompatActivity {
                 Intent show_intent = new Intent(v.getContext(), ShowChosenListActivity.class);
                 show_intent.putExtra(EXTRA_MESSAGE, profile_id);
                 show_intent.putExtra(NAME_MESSAGE, profile_name);
-                show_intent.putExtra("View", 3);
+                show_intent.putExtra(VIEW_MESSAGE, RECENT_CONST);
                 startActivity(show_intent);
             }
         });
@@ -74,17 +72,7 @@ public class ChooseNextStepActivity extends AppCompatActivity {
                 Intent show_intent = new Intent(v.getContext(), ShowChosenListActivity.class);
                 show_intent.putExtra(EXTRA_MESSAGE, profile_id);
                 show_intent.putExtra(NAME_MESSAGE, profile_name);
-                show_intent.putExtra("View", 2);
-                startActivity(show_intent);
-            }
-        });
-
-        compare_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent show_intent = new Intent(v.getContext(), ShowChosenListActivity.class);
-                show_intent.putExtra(EXTRA_MESSAGE, profile_id);
-                show_intent.putExtra(NAME_MESSAGE, profile_name);
+                show_intent.putExtra(VIEW_MESSAGE, FRIENDS_CONST);
                 startActivity(show_intent);
             }
         });

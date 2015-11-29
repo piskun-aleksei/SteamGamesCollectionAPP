@@ -44,18 +44,7 @@
         android:layout_below="@+id/choosen_list_message"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_above="@+id/percentage_message" />
-
-    <ProgressBar
-        style="?android:attr/progressBarStyleSmall"
-        android:layout_width= "25dp"
-        android:layout_height = "25dp"
-        android:id="@+id/loading_bar"
-        android:layout_centerHorizontal="true"
-        android:indeterminate="false"
-        android:indeterminateDrawable="@drawable/blue_progress"
-        android:visibility="invisible"
-        android:layout_alignParentBottom="true" />
+        android:layout_above="@+id/total_message" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -65,7 +54,6 @@
         android:id="@+id/percentage_message"
         android:gravity="center_vertical|center_horizontal"
         android:minWidth="100dp"
-        android:layout_above="@+id/loading_bar"
         android:layout_centerHorizontal="true"
         android:textColor="#868686" />
 
