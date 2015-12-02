@@ -10,21 +10,28 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme" >
-        <activity android:name=".InputActivity"
-            android:screenOrientation="sensorPortrait">
+        <activity
+            android:name=".InputActivity"
+            android:screenOrientation="sensorPortrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ChooseNextStepActivity"
-            android:screenOrientation="sensorPortrait">
+        <activity
+            android:name=".ChooseNextStepActivity"
+            android:screenOrientation="sensorPortrait" >
         </activity>
-        <activity android:name=".ShowChosenListActivity"
-            android:screenOrientation="sensorPortrait">
+        <activity
+            android:name=".ShowChosenListActivity"
+            android:screenOrientation="sensorPortrait" >
         </activity>
-
+        <activity
+            android:name=".DialogActivity"
+            android:theme="@android:style/Theme.Dialog"
+        android:label="@string/app_name">
+    </activity>
     </application>
 
 </manifest>

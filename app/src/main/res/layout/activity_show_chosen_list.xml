@@ -85,4 +85,14 @@
         android:gravity="center_vertical|center_horizontal"
         android:visibility="invisible" />
 
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/loading_bar"
+        android:layout_alignParentBottom="true"
+        android:indeterminateDrawable="@drawable/blue_progress"
+        android:layout_centerHorizontal="true"
+        android:indeterminate="false"
+        android:visibility="invisible" />
+
 </RelativeLayout>

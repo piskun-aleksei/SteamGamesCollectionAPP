@@ -8,9 +8,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 public class ChooseNextStepActivity extends AppCompatActivity {
-    public final static String EXTRA_MESSAGE = "MESSAGE";
-    public final static String NAME_MESSAGE = "NAME";
-    public final static String VIEW_MESSAGE = "VIEW";
+
     int GAMES_CONST = 1;
     int FRIENDS_CONST = 2;
     int RECENT_CONST = 3;
@@ -32,8 +30,8 @@ public class ChooseNextStepActivity extends AppCompatActivity {
     private void initialize_fields(){
         parent_intent = getIntent();
 
-        profile_id = parent_intent.getStringExtra(InputActivity.EXTRA_MESSAGE);
-        profile_name = parent_intent.getStringExtra(InputActivity.NAME_MESSAGE);
+        profile_id = parent_intent.getStringExtra("ID");
+        profile_name = parent_intent.getStringExtra("NAME");
 
         name_message = (TextView) findViewById(R.id.choose_name_message);
         name_message.setText("Hello, " + profile_name);
@@ -41,6 +39,7 @@ public class ChooseNextStepActivity extends AppCompatActivity {
         games_collection_button = (Button) findViewById(R.id.games_collection_button);
         recent_games_button = (Button) findViewById(R.id.recent_games_button);
         friend_list_button = (Button) findViewById(R.id.friend_list_button);
+       // Toast.makeText(getApplicationContext(),profile_id, Toast.LENGTH_SHORT).show();
     }
 
     private void initialize_buttons(){
@@ -48,9 +47,9 @@ public class ChooseNextStepActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent show_intent = new Intent(v.getContext(), ShowChosenListActivity.class);
-                show_intent.putExtra(EXTRA_MESSAGE, profile_id);
-                show_intent.putExtra(NAME_MESSAGE, profile_name);
-                show_intent.putExtra(VIEW_MESSAGE, GAMES_CONST);
+                show_intent.putExtra("ID", profile_id);
+                show_intent.putExtra("NAME", profile_name);
+                show_intent.putExtra("VIEW", GAMES_CONST);
                 startActivity(show_intent);
             }
         });
@@ -59,9 +58,9 @@ public class ChooseNextStepActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent show_intent = new Intent(v.getContext(), ShowChosenListActivity.class);
-                show_intent.putExtra(EXTRA_MESSAGE, profile_id);
-                show_intent.putExtra(NAME_MESSAGE, profile_name);
-                show_intent.putExtra(VIEW_MESSAGE, RECENT_CONST);
+                show_intent.putExtra("ID", profile_id);
+                show_intent.putExtra("NAME", profile_name);
+                show_intent.putExtra("VIEW", RECENT_CONST);
                 startActivity(show_intent);
             }
         });
@@ -70,9 +69,9 @@ public class ChooseNextStepActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent show_intent = new Intent(v.getContext(), ShowChosenListActivity.class);
-                show_intent.putExtra(EXTRA_MESSAGE, profile_id);
-                show_intent.putExtra(NAME_MESSAGE, profile_name);
-                show_intent.putExtra(VIEW_MESSAGE, FRIENDS_CONST);
+                show_intent.putExtra("ID", profile_id);
+                show_intent.putExtra("NAME", profile_name);
+                show_intent.putExtra("VIEW", FRIENDS_CONST);
                 startActivity(show_intent);
             }
         });

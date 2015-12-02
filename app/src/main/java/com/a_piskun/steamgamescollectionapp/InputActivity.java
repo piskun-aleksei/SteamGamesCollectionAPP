@@ -22,12 +22,12 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 public class InputActivity extends AppCompatActivity {
-    public final static String EXTRA_MESSAGE = "com.a_piskun.steamgamescollectionapp.MESSAGE";
-    public final static String NAME_MESSAGE = "com.a_piskun.steamgamescollectionapp.NAME";
+
     Button confirm_id_button, get_info_button;
     EditText id_input_field;
     TextView json_message;
     String profile_url, profile_name;
+    JSONObject recieved_json_object;
 
     String BASE_URL = "http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?" +
             "key=6FA27B723BB28AFB78D820A2C4C6DBD6&steamids=";
@@ -37,20 +37,28 @@ public class InputActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_input);
 
+        initialize_fields();
+        initialize_buttons();
+    }
+
+    private void initialize_fields(){
+
         confirm_id_button = (Button) findViewById(R.id.confirm_id_button);
         get_info_button = (Button) findViewById(R.id.get_info_button);
 
         id_input_field = (EditText) findViewById(R.id.id_input_field);
 
         json_message = (TextView) findViewById(R.id.json_message);
+    }
 
+    private void initialize_buttons(){
         confirm_id_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent choose_intent = new Intent(v.getContext(), ChooseNextStepActivity.class);
                 String message = id_input_field.getText().toString();
-                choose_intent.putExtra(EXTRA_MESSAGE, message);
-                choose_intent.putExtra(NAME_MESSAGE, profile_name);
+                choose_intent.putExtra("ID", message);
+                choose_intent.putExtra("NAME", profile_name);
                 confirm_id_button.setVisibility(View.INVISIBLE);
                 startActivity(choose_intent);
             }
@@ -63,11 +71,11 @@ public class InputActivity extends AppCompatActivity {
                     confirm_id_button.setVisibility(View.INVISIBLE);
                 }
 
-                    StringBuilder profile_url_builder = new StringBuilder("");
-                    profile_url_builder.append(BASE_URL);
-                    profile_url_builder.append(id_input_field.getText().toString());
-                    profile_url = profile_url_builder.toString();
-                    get_json_file(profile_url);
+                StringBuilder profile_url_builder = new StringBuilder("");
+                profile_url_builder.append(BASE_URL);
+                profile_url_builder.append(id_input_field.getText().toString());
+                profile_url = profile_url_builder.toString();
+                get_json_file(profile_url);
 
 
             }
@@ -76,6 +84,21 @@ public class InputActivity extends AppCompatActivity {
 
     private void get_json_file(String json_url){
         new JSONTask().execute(json_url);
+    }
+
+    private void parse_json() throws JSONException {
+        JSONObject json_response = recieved_json_object.getJSONObject("response");
+        JSONArray json_players = json_response.getJSONArray("players");
+        JSONObject json_final_object = json_players.getJSONObject(0);
+        profile_name = json_final_object.getString("personaname");
+
+        if(profile_name != null) {
+            json_message.setText(profile_name);
+            confirm_id_button.setVisibility(View.VISIBLE);
+        }
+        else{
+            json_message.setText("Invalid URL or Bad internet connection");
+        }
     }
 
     public class JSONTask extends AsyncTask<String , String, String > {
@@ -103,12 +126,7 @@ public class InputActivity extends AppCompatActivity {
 
                     String json_info = buffer.toString();
 
-                    JSONObject json_object = new JSONObject(json_info);
-                    JSONObject json_response = json_object.getJSONObject("response");
-                    JSONArray json_players = json_response.getJSONArray("players");
-                    JSONObject json_final_object = json_players.getJSONObject(0);
-
-                    String profile_name = json_final_object.getString("personaname");
+                    recieved_json_object = new JSONObject(json_info);
 
                     return profile_name;
 
@@ -137,14 +155,10 @@ public class InputActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String result){
             super.onPostExecute(result);
-            profile_name = result;
-
-            if(result != null) {
-                json_message.setText(profile_name);
-                confirm_id_button.setVisibility(View.VISIBLE);
-            }
-            else{
-                json_message.setText("Invalid URL or Bad internet connection");
+            try {
+                parse_json();
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
         }
     }
