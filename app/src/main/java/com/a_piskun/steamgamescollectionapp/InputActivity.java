@@ -87,6 +87,10 @@ public class InputActivity extends AppCompatActivity {
     }
 
     private void parse_json() throws JSONException {
+        if(recieved_json_object == null) {
+            json_message.setText("Invalid URL or Bad internet connection");
+            return;
+        }
         JSONObject json_response = recieved_json_object.getJSONObject("response");
         JSONArray json_players = json_response.getJSONArray("players");
         JSONObject json_final_object = json_players.getJSONObject(0);
@@ -128,7 +132,7 @@ public class InputActivity extends AppCompatActivity {
 
                     recieved_json_object = new JSONObject(json_info);
 
-                    return profile_name;
+                return null;
 
                 } catch (MalformedURLException e) {
                     e.printStackTrace();
