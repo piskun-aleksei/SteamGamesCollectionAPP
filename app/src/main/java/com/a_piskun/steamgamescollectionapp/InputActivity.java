@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import org.json.JSONArray;
@@ -28,6 +29,7 @@ public class InputActivity extends AppCompatActivity {
     TextView json_message;
     String profile_url, profile_name;
     JSONObject recieved_json_object;
+    ProgressBar loading_input_bar;
 
     String BASE_URL = "http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?" +
             "key=6FA27B723BB28AFB78D820A2C4C6DBD6&steamids=";
@@ -42,6 +44,8 @@ public class InputActivity extends AppCompatActivity {
     }
 
     private void initialize_fields(){
+
+        loading_input_bar = (ProgressBar) findViewById(R.id.loading_input_bar);
 
         confirm_id_button = (Button) findViewById(R.id.confirm_id_button);
         get_info_button = (Button) findViewById(R.id.get_info_button);
@@ -70,7 +74,7 @@ public class InputActivity extends AppCompatActivity {
                 if(confirm_id_button.getVisibility() == View.VISIBLE) {
                     confirm_id_button.setVisibility(View.INVISIBLE);
                 }
-
+                loading_input_bar.setVisibility(View.VISIBLE);
                 StringBuilder profile_url_builder = new StringBuilder("");
                 profile_url_builder.append(BASE_URL);
                 profile_url_builder.append(id_input_field.getText().toString());
@@ -83,12 +87,14 @@ public class InputActivity extends AppCompatActivity {
     }
 
     private void get_json_file(String json_url){
+
         new JSONTask().execute(json_url);
     }
 
     private void parse_json() throws JSONException {
         if(recieved_json_object == null) {
-            json_message.setText("Invalid URL or Bad internet connection");
+            loading_input_bar.setVisibility(View.INVISIBLE);
+            json_message.setText("Invalid ID or Bad internet connection");
             return;
         }
         JSONObject json_response = recieved_json_object.getJSONObject("response");
@@ -96,11 +102,13 @@ public class InputActivity extends AppCompatActivity {
         JSONObject json_final_object = json_players.getJSONObject(0);
         profile_name = json_final_object.getString("personaname");
         if(profile_name != null) {
+            loading_input_bar.setVisibility(View.INVISIBLE);
             json_message.setText(profile_name);
             confirm_id_button.setVisibility(View.VISIBLE);
         }
         else{
-            json_message.setText("Invalid URL or Bad internet connection");
+            loading_input_bar.setVisibility(View.INVISIBLE);
+            json_message.setText("Invalid ID or Bad internet connection");
         }
     }
 
@@ -162,7 +170,8 @@ public class InputActivity extends AppCompatActivity {
                 parse_json();
             } catch (JSONException e) {
                 e.printStackTrace();
-                json_message.setText("Invalid URL or Bad internet connection");
+                loading_input_bar.setVisibility(View.INVISIBLE);
+                json_message.setText("Invalid ID or Bad internet connection");
             }
         }
     }

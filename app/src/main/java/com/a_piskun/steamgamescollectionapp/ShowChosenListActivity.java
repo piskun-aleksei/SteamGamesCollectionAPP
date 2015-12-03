@@ -40,7 +40,7 @@ public class ShowChosenListActivity extends AppCompatActivity {
     ArrayList<String> list_of_friends;
 
     int [] games_hours;
-    String [] friends_ids;
+    String [] friends_ids, friends_names, games_names;
     ListView chosen_list;
     ArrayAdapter<String> adapter;
 
@@ -189,11 +189,14 @@ public class ShowChosenListActivity extends AppCompatActivity {
                 JSONArray json_games = json_games_list.getJSONArray("games");
                 list_length = json_games.length();
                 games_hours = new int[list_length];
+                games_names = new String[list_length];
                 for(int i = 0; i < list_length; i ++) {
                     JSONObject json_games_final_object = json_games.getJSONObject(i);
                     games_hours[i] = json_games_final_object.getInt("playtime_forever");
-                    adapter.add(json_games_final_object.getString("name"));
+                    games_names[i] = json_games_final_object.getString("name");
                 }
+                Arrays.sort(games_names);
+                adapter.addAll(games_names);
                 total_message.setVisibility(View.VISIBLE);
                 total_count_message.setVisibility(View.VISIBLE);
                 total_count_message.setText(list_length.toString());
@@ -206,6 +209,7 @@ public class ShowChosenListActivity extends AppCompatActivity {
                 friends_array = json_friends_list.getJSONArray("friends");
                 list_length = friends_array.length();
                 friends_ids = new String[list_length];
+                friends_names = new String[list_length];
                 StringBuilder profile_url_builder = new StringBuilder("");
                 profile_url_builder.append(SECONDARY_URL);
                 for(int i = 0; i < list_length; i++){
@@ -237,8 +241,10 @@ public class ShowChosenListActivity extends AppCompatActivity {
                 for(int i = 0; i < list_length; i ++) {
                     JSONObject json_games_final_object = json_recent_games.getJSONObject(i);
                     games_hours[i] = json_games_final_object.getInt("playtime_2weeks");
-                    adapter.add(json_games_final_object.getString("name"));
+                    games_names[i] = json_games_final_object.getString("name");
                 }
+                Arrays.sort(games_names);
+                adapter.addAll(games_names);
                 total_message.setVisibility(View.VISIBLE);
                 total_count_message.setVisibility(View.VISIBLE);
                 total_count_message.setText(list_length.toString());
@@ -258,9 +264,12 @@ public class ShowChosenListActivity extends AppCompatActivity {
         loading_bar.setVisibility(View.INVISIBLE);
         total_count_message.setText(list_length.toString());
         for(int i = 0; i < list_length; i ++){
-            adapter.add(friends_array.getJSONObject(i).getString("personaname"));
+            //adapter.add(friends_array.getJSONObject(i).getString("personaname"));
             friends_ids[i] = friends_array.getJSONObject(i).getString("steamid");
+            friends_names[i] = friends_array.getJSONObject(i).getString("personaname");
         }
+        Arrays.sort(friends_names);
+        adapter.addAll(friends_names);
         initialize_on_clicks_methods();
     }
 
