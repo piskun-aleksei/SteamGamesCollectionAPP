@@ -95,7 +95,6 @@ public class InputActivity extends AppCompatActivity {
         JSONArray json_players = json_response.getJSONArray("players");
         JSONObject json_final_object = json_players.getJSONObject(0);
         profile_name = json_final_object.getString("personaname");
-
         if(profile_name != null) {
             json_message.setText(profile_name);
             confirm_id_button.setVisibility(View.VISIBLE);
@@ -163,6 +162,7 @@ public class InputActivity extends AppCompatActivity {
                 parse_json();
             } catch (JSONException e) {
                 e.printStackTrace();
+                json_message.setText("Invalid URL or Bad internet connection");
             }
         }
     }
